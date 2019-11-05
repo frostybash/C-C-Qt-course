@@ -11,7 +11,8 @@ int main()
 	}
 	for (int i=0;i<1000;i++)
 	{
-		printf("a[%d]:%c",i,arr);
+		//printf("a[%d]:%d",i,arr[i]);
+		printf("%c",arr[i]);
 	}
 	printf("\n");
 	return 0;
