@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 void Create_file()
 {
@@ -16,20 +17,17 @@ void Create_file()
 int main ()
 {
     Create_file();
-    char z[255]={0};
-    char i=0;
+    long size;
+    //char i=0;
     FILE * Z = fopen( "1.txt", "r" );
     if (!Z)
     {
         fputs( "Error opening fiile\n", stderr );
         return 1;
     }
-    
-    while ( fscanf (Z, "%c", z[i] != EOF))
-    {
-        i++;
-    }
-    printf ("size of the data in file:", sizeof(a));
+    fseek (Z, 0, SEEK_END);   
+    size=ftell (Z);   
     fclose(Z);
+    printf ("size of the data in file: %ld\n", sizeof(size));
     return 0;    
 }
