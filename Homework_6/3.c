@@ -18,7 +18,6 @@ int main ()
 {
     Create_file();
     long size;
-    //char i=0;
     FILE * Z = fopen( "1.txt", "r" );
     if (!Z)
     {
@@ -28,6 +27,6 @@ int main ()
     fseek (Z, 0, SEEK_END);   
     size=ftell (Z);   
     fclose(Z);
-    printf ("size of the data in file: %ld\n", sizeof(size));
+    printf ("number of symbols: %ld\n", size);
     return 0;    
 }
