@@ -1,0 +1,68 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+n = rear-frnt+1
+#define QMAX 100
+struct queue {
+  int qu[QMAX];
+  int rear, frnt;
+};
+
+void init(struct queue *q) {
+  q->frnt = 1;
+  q->rear = 0;
+  return;
+}
+
+void insert(struct queue *q, int x) {
+  if(q->rear < QMAX-1) {
+    q->rear++;
+    q->qu[q->rear]=x;
+  }
+  else
+    printf("Очередь полна!\n");
+  return;
+}
+
+int isempty(struct queue *q) {
+  if(q->rear < q->frnt)    return(1);
+  else  return(0);
+}
+
+void print(struct queue *q) {
+  int h;
+  if(isempty(q)==1) {
+    printf("Очередь пуста!\n");
+    return;
+  }
+  for(h = q->frnt; h<= q->rear; h++)
+    printf(«%d «,q->qu[h]);
+  return;
+}
+
+int remove(struct queue *q) {
+  int x;
+  if(isempty(q)==1) {
+    printf("Очередь пуста!\n");
+    return(0);
+  }
+  x = q->qu[q->frnt];
+  q->frnt++;
+  return(x);
+}
+
+
+int removex(struct queue *q) {
+  int x, h;
+  if(isempty(q)==1) {
+    printf("Очередь пуста!\n");
+    return(0);
+  }
+  x = q->qu[q->frnt];
+  for(h = q->frnt; h < q->rear; h++) {
+    q->qu[h] = q->qu[h+1];
+  }
+  q->rear—;
+  return(x);
+}
