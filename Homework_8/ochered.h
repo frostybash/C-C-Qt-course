@@ -66,3 +66,26 @@ int removex(struct queue *q) {
   q->rear—;
   return(x);
 }
+
+int ochered() {
+  struct queue *q;
+  int a;
+  //system(«chcp 1251»);
+  //system(«cls»);
+  q = (queue*)malloc(sizeof(queue));
+  init(q);
+  print(q);
+  for(int i=0;i<8;i++) {
+    printf("Введите элемент очереди: ");
+    scanf("%d",&a);
+    insert(q, a);
+  }
+  printf("\n");
+  print(q);
+  while(q->frnt <= q->rear) {
+    a = remove(q);
+    printf("\nУдален элемент %d\n", a);
+    print(q);
+  }
+  return 0;
+}

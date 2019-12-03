@@ -2,51 +2,75 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define NMAX 10
-struct stack {
-    float elem[NMAX];
-    int top;
-    int priority;    
-};
+#define STACK_MAX_SIZE 20
+#define STACK_OVERFLOW  -100
+#define STACK_UNDERFLOW -101
+
+typedef int T;
 
 
-void task_menu()
+typedef struct Stack_tag {
+    T data[STACK_MAX_SIZE];
+    size_t size;
+} Stack_t;
+
+void push(Stack_t *stack, const T value) {
+    if (stack->size >= STACK_MAX_SIZE) {
+        exit(STACK_OVERFLOW);
+    }
+    stack->data[stack->size] = value;
+    stack->size++;
+}
+
+T pop(Stack_t *stack) {
+    if (stack->size == 0) {
+        exit(STACK_UNDERFLOW);
+    }
+    stack->size--;
+    return stack->data[stack->size];
+}
+
+T peek(const Stack_t *stack) {
+    if (stack->size <= 0) {
+        exit(STACK_UNDERFLOW);
+    }
+    return stack->data[stack->size - 1];
+}
+
+void printStackValue(const T value) {
+    printf("%d", value);
+}
+ 
+void printStack(const Stack_t *stack, void (*printStackValue)(const T)) {
+    int i;
+    int len = stack->size - 1;
+    printf("stack %ld > ", stack->size);
+    for (i = 0; i < len; i++) {
+        printStackValue(stack->data[i]);
+        printf(" | ");
+    }
+    if (stack->size != 0) {
+        printStackValue(stack->data[i]);
+    }
+    printf("\n");
+}
+
+void stek()
 {
-    printf( "//////////////////////// welcome to the task menu ///////////////////////\n");
+    Stack_t stack;
+    stack.size = 0;
+ 
+    push(&stack, 3);
+    printStack(&stack, printStackValue);
+    push(&stack, 5);
+    printStack(&stack, printStackValue);
+    push(&stack, 7);
+    printStack(&stack, printStackValue);
+    printf("%d\n", pop(&stack));
+    printStack(&stack, printStackValue);
+    printf("%d\n", pop(&stack));
+    printStack(&stack, printStackValue);
+    printf("%d\n", pop(&stack));
+    printStack(&stack, printStackValue);
 }
 
-void init_stek(struct stack *stk) {    
-  stk->top = 0;
-}
-
-void push(struct stack *stk, float f) {
-  if(stk->top < NMAX) {
-    stk->elem[stk->top] = f;
-    stk->top++;
-  } else
-    printf("Стек полон, количество элементов: %d !\n", stk->top);
-}
-
-void pop(struct stack *stk) {
-  float elem;
-  if((stk->top) > 0) {
-    stk->top—;
-    elem = stk->elem[stk->top];
-    return(elem);
-  } else {
-    printf("Стек пуст!\n");
-    return(0);
-  }
-}
-
-void stkTop(struct stack *stk) {     ///peek function
-  if((stk->top) > 0) {
-    return( stk->elem[stk->top-1]);
-  } else {
-    printf("Стек пуст!\n");
-    return(0);
-  }
-}
-
-int gettop(struct stack *stk) {    ///take element from top of the stack
- return(stk->top);}
