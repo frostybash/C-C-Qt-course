@@ -15,7 +15,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    void createFile();
+   // void createFile();
 
 private:
     Ui::MainWindow *ui;

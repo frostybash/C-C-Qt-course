@@ -5,65 +5,62 @@
 #include <QTextStream>
 #include <QDateTime>
 #include <QRandomGenerator>
+#include <QDebug>
+#include <QStringList>
+#include <QBarCategoryAxis>
+#include <QBarSet>
 QT_CHARTS_USE_NAMESPACE
 
 int main(int argc, char *argv[])
 {
+
     QApplication a(argc, argv);
-    QRandomGenerator prng1(100), prng2(100);
-          Q_ASSERT(prng1.generate() == prng2.generate());
-          Q_ASSERT(prng1.generate64() == prng2.generate64());
-    int x = QRandomGenerator::global()->generate();
-    int y = QRandomGenerator::global()->generate();
-    //qsrand(QDateTime::currentMSecsSinceEpoch() / 1000);
-    QString path ="/home/igor/C-C-Qt-course/Homework_23/primer";
-    QString filename ="dataX.txt";
+    QLineSeries *series = new QLineSeries();
+    QChart *chart = new QChart();
+    QChartView *chartView = new QChartView(chart);
+    QString path ="/home/igor/C-C-Qt-course/Homework_23/primer/";
     QFile file(path+"dataX.txt");
       if (file.open(QFile::WriteOnly | QFile::Truncate)) {
           QTextStream out(&file);
           for (int i=0; i<1000;i++)
               {
-                out << QRandomGenerator::global()->generate() << "\n";
-          }
+                quint32 x = QRandomGenerator::global()->bounded(1,10000);
+                quint32 y = QRandomGenerator::global()->bounded(1,10000);
+                out << x << "," << y <<"\n";
+              }
       }
     file.close();
-
-    QString filename2 ="dataY.txt";
-    QFile file2(path+"dataY.txt");
-      if (file2.open(QFile::WriteOnly | QFile::Truncate)) {
-          QTextStream out2(&file);
-          for (int j=0; j<1000;j++)
-              {
-                out2 << QRandomGenerator::global()->generate() << "\n";
-          }
-      }
-    file2.close();
-    QFile file3("primerdataX.txt");
-         if (!file3.open(QIODevice::ReadOnly | QIODevice::Text))
-
-         QTextStream in1(&file3);
-         while (in1.atEnd()) {
-             QString line = in1.readLine();
-            // process_line(line);
-         }
-    QLineSeries *series = new QLineSeries();
-    series->append(x,y);
-    series->append(x,y);
-    series->append(x,y);
-    series->append(x,y);
-    series->append(x,y);
-    QChart *chart = new QChart();
-    chart->legend()->hide();
+    QString path3 ="/home/igor/C-C-Qt-course/Homework_23/primer/";
+    QFile file3(path3+"dataX.txt");
+    if (!file3.open(QIODevice::ReadOnly | QIODevice::Text))
+    QTextStream rw(&file3);
+    QString line;
+    while (!file3.atEnd())
+    {
+        line = file3.readLine();
+        QStringList stroka = line.split(",");
+         qulonglong valuesX;
+         qulonglong valuesY;
+         valuesX=stroka.at(0).toInt();
+         valuesY=stroka.at(1).toInt();
+    series->append(valuesX,valuesY);
+    }
+    file3.close();
+    QString random_values_from_file;
+    chart->legend()->setVisible(true);
+    chart->legend()->setAlignment((Qt::AlignBottom));
     chart->addSeries(series);
     chart->createDefaultAxes();
+    QFont font;
+    font.setPixelSize(18);
+    qDebug() << font;
+    chart->setTitleBrush(QBrush(Qt::black));
     chart->setTitle("random numbers");
-    QChartView *chartView = new QChartView(chart);
     chartView->setRenderHint(QPainter::Antialiasing);
     QMainWindow window;
     window.setCentralWidget(chartView);
     window.resize(1000, 1000);
     window.show();
-
     return a.exec();
 }
 
